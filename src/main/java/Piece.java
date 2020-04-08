@@ -1,8 +1,12 @@
 public abstract class Piece
 {
-	private PieceType type;
-	private Position pos;
-	private Side side;
+	protected PieceType type;
+	protected Position pos;
+	protected Side side;
+
+	public abstract boolean canMove(Position newPosition, Piece[][] board);
+
+	public abstract void move(Position newPosition, Piece[][] board);
 
 	public class Position
 	{
