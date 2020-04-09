@@ -1,6 +1,5 @@
 public class Pawn extends Piece
 {
-//	private boolean canMove;
 
 	public Pawn(Position position)
 	{
@@ -11,6 +10,9 @@ public class Pawn extends Piece
 	@Override
 	public boolean canMove(Position newPosition, Piece[][] board)
 	{
+		canMove = true;
+		previousCheckedPosition = newPosition;
+
 		byte thisX = pos.getX();
 		byte thisY = pos.getY();
 		byte newX = newPosition.getX();
@@ -27,28 +29,21 @@ public class Pawn extends Piece
 			if (xDistance == 0)
 			{
 				Piece frontPiece = side == Side.WHITE ? board[thisX][thisY + 1] : board[thisX][thisY - 1];
-				return frontPiece == null;
+				return canMove = frontPiece == null;
 			}
 			else if (xDistance == 1)
 			{
 				Piece sidePiece = side == Side.WHITE ? board[thisX + 1][thisY + 1] : board[thisX + 1][thisY - 1];
-				return sidePiece != null;
+				return canMove = sidePiece != null;
 			}
 			else if (xDistance == -1)
 			{
 				Piece sidePiece = side == Side.WHITE ? board[thisX - 1][thisY + 1] : board[thisX - 1][thisY - 1];
-				return sidePiece != null;
+				return canMove = sidePiece != null;
 			}
 		}
-
+		canMove = false;
 		return false;
-	}
-
-
-	@Override
-	public void move(Position newPosition, Piece[][] board)
-	{
-		//should throw an exception if canMove is false
 	}
 
 }
