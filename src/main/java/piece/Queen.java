@@ -17,6 +17,8 @@ public class Queen extends Piece
     @Override
     public boolean canMove(Position newPosition, Piece[][] board)
     {
+        previousCheckedPosition = newPosition;
+
         //TODO need check to make sure pos != newPosition
         byte thisX = pos.getX();
         byte thisY = pos.getY();
@@ -24,9 +26,9 @@ public class Queen extends Piece
         byte newY = newPosition.getY();
 
         if (thisX == newX || thisY == newY)
-            return checkLateral(newPosition, board);
+            return canMove = checkLateral(newPosition, board);
         else
-            return checkDiagonal(newPosition, board);
+            return canMove = checkDiagonal(newPosition, board);
     }
 
     protected boolean checkLateral(Position newPos, Piece[][] board)

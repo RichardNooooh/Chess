@@ -12,7 +12,6 @@ public class Pawn extends Piece
 	@Override
 	public boolean canMove(Position newPosition, Piece[][] board)
 	{
-		canMove = true;
 		previousCheckedPosition = newPosition;
 
 		byte thisX = pos.getX();
@@ -46,7 +45,7 @@ public class Pawn extends Piece
 			}
 			//TODO add en passant rule
 		}
-		canMove = false;
+
 		return false;
 	}
 

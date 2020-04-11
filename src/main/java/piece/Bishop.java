@@ -11,9 +11,12 @@ public class Bishop extends Queen
     @Override
     public boolean canMove(Position newPosition, Piece[][] board)
     {
+        canMove = false;
+        previousCheckedPosition = newPosition;
+
         //TODO need check to make sure pos != newPosition
         if (pos.getX() == newPosition.getX() || pos.getY() == newPosition.getY())
-            return checkLateral(newPosition, board);
+            return canMove = checkLateral(newPosition, board);
 
         return false;
     }

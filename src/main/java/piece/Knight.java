@@ -21,13 +21,16 @@ public class Knight extends Piece
     @Override
     public boolean canMove(Position newPosition, Piece[][] board)
     {
+        canMove = false;
+        previousCheckedPosition = newPosition;
+
         byte diffX = (byte)(newPosition.getX() - pos.getX());
         byte diffY = (byte)(newPosition.getY() - pos.getY());
         Position difPosition = new Position(diffX, diffY);
         for (Position validPos : delPositions)
         {
             if (difPosition.equals(validPos))
-                return true;
+                return canMove = true;
         }
 
         return false;
