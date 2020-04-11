@@ -29,7 +29,7 @@ public class Knight extends Piece
         Position difPosition = new Position(diffX, diffY);
         for (Position validPos : delPositions)
         {
-            if (difPosition.equals(validPos))
+            if (difPosition.equals(validPos) && isEnemy(board[newPosition.getX()][newPosition.getY()]))
                 return canMove = true;
         }
 
