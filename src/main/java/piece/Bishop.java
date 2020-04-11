@@ -2,10 +2,11 @@ package piece;
 
 public class Bishop extends Queen
 {
-    public Bishop(Position position)
+    public Bishop(Position position, Side side)
     {
         type = PieceType.BISHOP;
         pos = position;
+        this.side = side;
     }
 
     @Override

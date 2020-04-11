@@ -6,10 +6,11 @@ import java.util.function.Predicate;
 public class Queen extends Piece
 {
 
-    public Queen(Position position)
+    public Queen(Position position, Side side)
     {
         type = PieceType.QUEEN;
         pos = position;
+        this.side = side;
     }
 
     protected Queen(){}

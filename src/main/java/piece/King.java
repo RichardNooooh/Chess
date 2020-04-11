@@ -10,10 +10,11 @@ public class King extends Piece
                                              new Position((byte) -1, (byte) -1),
                                              new Position((byte) -1, (byte) 0),
                                              new Position((byte) -1, (byte) 1)};
-    public King(Position position)
+    public King(Position position, Side side)
     {
         type = PieceType.KNIGHT;
         pos = position;
+        this.side = side;
     }
 
     @Override

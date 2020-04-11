@@ -2,10 +2,11 @@ package piece;
 
 public class Rook extends Queen
 {
-    public Rook(Position position)
+    public Rook(Position position, Side side)
     {
         type = PieceType.ROOK;
         pos = position;
+        this.side = side;
     }
 
     @Override

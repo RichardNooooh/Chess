@@ -3,10 +3,11 @@ package piece;
 public class Pawn extends Piece
 {
 
-	public Pawn(Position position)
+	public Pawn(Position position, Side side)
 	{
 		type = PieceType.PAWN;
 		pos = position;
+		this.side = side;
 	}
 
 	@Override

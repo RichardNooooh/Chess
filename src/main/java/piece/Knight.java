@@ -12,10 +12,11 @@ public class Knight extends Piece
                                              new Position((byte) -3, (byte) 1),
                                              new Position((byte) -1, (byte) 3)};
 
-    public Knight(Position position)
+    public Knight(Position position, Side side)
     {
         type = PieceType.KNIGHT;
         pos = position;
+        this.side = side;
     }
 
     @Override
