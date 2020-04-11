@@ -8,7 +8,7 @@ public class Queen extends Piece
 
     public Queen(Position position)
     {
-        type = PieceType.PAWN;
+        type = PieceType.QUEEN;
         pos = position;
     }
 
