@@ -11,6 +11,8 @@ public class Queen extends Piece
         pos = position;
     }
 
+    protected Queen(){}
+
     @Override
     public boolean canMove(Position newPosition, Piece[][] board)
     {
