@@ -25,6 +25,11 @@ public abstract class Piece
 					"call this method with the same position.");
 	}
 
+	public boolean isEnemy(Piece otherPiece)
+	{
+		return this.side != otherPiece.side;
+	}
+
 	public class Position
 	{
 		private byte x;

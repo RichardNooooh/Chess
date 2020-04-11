@@ -26,6 +26,7 @@ public class Pawn extends Piece
 		//TODO I could probably condense this with lambda expressions
 		if (isInFront)
 		{
+			//TODO add the initial "jump" rule
 			if (xDistance == 0)
 			{
 				Piece frontPiece = side == Side.WHITE ? board[thisX][thisY + 1] : board[thisX][thisY - 1];
@@ -41,6 +42,7 @@ public class Pawn extends Piece
 				Piece sidePiece = side == Side.WHITE ? board[thisX - 1][thisY + 1] : board[thisX - 1][thisY - 1];
 				return canMove = sidePiece != null;
 			}
+			//TODO add en passant rule
 		}
 		canMove = false;
 		return false;
