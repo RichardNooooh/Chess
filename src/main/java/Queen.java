@@ -21,15 +21,13 @@ public class Queen extends Piece
         byte newY = newPosition.getY();
 
         if (thisX == newX || thisY == newY)
-            return checkLateral(newPosition, board, thisY == newY);
-
-        return false;
+            return checkLateral(newPosition, board);
+        else
+            return checkDiagonal(newPosition, board);
     }
 
-    private boolean checkLateral(Position newPos, Piece[][] board, boolean bool)
+    protected boolean checkLateral(Position newPos, Piece[][] board)
     {
-        byte thisX = pos.getX();
-        byte thisY = pos.getY();
         int xDiff = newPos.getX() - pos.getX();
         int yDiff = newPos.getY() - pos.getY();
 
@@ -38,6 +36,7 @@ public class Queen extends Piece
         {
             Predicate<Position> endPosition = s -> s.getY() == newPos.getY();
             Function<Integer, Integer> horizontalConstant = x -> x;
+
             if (yDiff > 0)
                 blockingPiece = loop(endPosition, horizontalConstant, y -> y + 1, board);
             else if (yDiff < 0)
@@ -47,10 +46,41 @@ public class Queen extends Piece
         {
             Predicate<Position> endPosition = s -> s.getX() == newPos.getX();
             Function<Integer, Integer> verticalConstant = y -> y;
+
             if (xDiff > 0)
-                blockingPiece = loop(endPosition, verticalConstant, x -> x + 1, board);
+                blockingPiece = loop(endPosition, x -> x + 1, verticalConstant, board);
             else if (xDiff < 0)
-                blockingPiece = loop(endPosition, verticalConstant, x -> x - 1, board);
+                blockingPiece = loop(endPosition, x -> x - 1, verticalConstant, board);
+        }
+
+        if (blockingPiece != null)
+            return isEnemy(blockingPiece);
+
+        return false;
+    }
+
+    protected boolean checkDiagonal(Position newPos, Piece[][] board)
+    {
+        int xDiff = newPos.getX() - pos.getX();
+        int yDiff = newPos.getY() - pos.getY();
+
+        Piece blockingPiece = null;
+        Predicate<Position> endPosition = s -> (s.getX() == newPos.getX()) && (s.getY() == newPos.getY());
+        if (xDiff > 0)
+        {
+            Function<Integer, Integer> horizontalChange = x -> x + 1;
+            if (yDiff > 0)
+                blockingPiece = loop(endPosition, horizontalChange, y -> y + 1, board);
+            else
+                blockingPiece = loop(endPosition, horizontalChange, y -> y - 1, board);
+        }
+        else
+        {
+            Function<Integer, Integer> horizontalChange = x -> x - 1;
+            if (yDiff > 0)
+                blockingPiece = loop(endPosition, horizontalChange, y -> y + 1, board);
+            else
+                blockingPiece = loop(endPosition, horizontalChange, y -> y - 1, board);
         }
 
         if (blockingPiece != null)
@@ -85,10 +115,6 @@ public class Queen extends Piece
         return new Position((byte)newX, (byte)newY);
     }
 
-    protected boolean checkDiagonal(Position newPosition, Piece[][] board)
-    {
-        return false;
-    }
 
 }
 //TODO Rook and Bishop will extend Queen since they're limited versions of the Queen
