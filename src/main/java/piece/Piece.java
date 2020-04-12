@@ -1,5 +1,7 @@
 package piece;
 
+import java.util.List;
+
 public abstract class Piece
 {
 	protected PieceType type;
@@ -9,7 +11,7 @@ public abstract class Piece
 	protected boolean canMove;
 	protected Position previousCheckedPosition;
 
-	public abstract boolean canMove(Position newPosition, Piece[][] board);
+	public abstract List<Position> validMoveList (Piece[][] board);
 
 	public void move(Position newPosition, Piece[][] board)
 	{
