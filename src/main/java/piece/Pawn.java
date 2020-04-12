@@ -1,7 +1,12 @@
 package piece;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Function;
+
 public class Pawn extends Piece
 {
+//	private boolean hasMoved;
 
 	public Pawn(Position position, Side side)
 	{
@@ -11,43 +16,34 @@ public class Pawn extends Piece
 	}
 
 	@Override
-	public boolean canMove(Position newPosition, Piece[][] board)
+	public List<Position> validMoveList (Piece[][] board)
 	{
-		previousCheckedPosition = newPosition;
+		LinkedList<Position> validPositions = new LinkedList<Position>();
 
-		byte thisX = pos.getX();
-		byte thisY = pos.getY();
-		byte newX = newPosition.getX();
-		byte newY = newPosition.getY();
+		if (side == Side.WHITE)
+			addPositions(board, validPositions, y -> (byte)(y + 1));
+		else if (side == Side.BLACK)
+			addPositions(board, validPositions, y -> (byte)(y - 1));
 
-		int xDistance = newX - thisX;
-		int yDistance = newY - thisY;
+		return validPositions;
+	}
 
-		boolean isInFront = (side == Side.WHITE && yDistance == 1) || (side == Side.BLACK && yDistance == -1);
+	private void addPositions(Piece[][] board, List<Position> list, Function<Byte, Byte> moveFunction)
+	{
+		byte frontYPosition = moveFunction.apply(pos.getY());
+		byte currentX = pos.getX();
 
-		//TODO I could probably condense this with lambda expressions
-		if (isInFront)
-		{
-			//TODO add the initial "jump" rule
-			if (xDistance == 0)
-			{
-				Piece frontPiece = side == Side.WHITE ? board[thisX][thisY + 1] : board[thisX][thisY - 1];
-				return canMove = frontPiece == null;
-			}
-			else if (xDistance == 1)
-			{
-				Piece sidePiece = side == Side.WHITE ? board[thisX + 1][thisY + 1] : board[thisX + 1][thisY - 1];
-				return canMove = sidePiece != null;
-			}
-			else if (xDistance == -1)
-			{
-				Piece sidePiece = side == Side.WHITE ? board[thisX - 1][thisY + 1] : board[thisX - 1][thisY - 1];
-				return canMove = sidePiece != null;
-			}
-			//TODO add en passant rule
-		}
+		Piece frontPiece = board[currentX][frontYPosition];
+		Piece frontRightPiece = board[currentX + 1][frontYPosition];
+		Piece frontLeftPiece = board[currentX - 1][frontYPosition];
 
-		return false;
+		if (frontPiece != null)
+			list.add(frontPiece.pos);
+
+		if (frontRightPiece != null && isEnemy(frontRightPiece))
+			list.add(frontRightPiece.pos);
+		if (frontLeftPiece != null && isEnemy(frontLeftPiece))
+			list.add(frontRightPiece.pos);
 	}
 
 }
