@@ -1,5 +1,8 @@
 package piece;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Rook extends Queen
 {
     public Rook(Position position, Side side)
@@ -10,14 +13,10 @@ public class Rook extends Queen
     }
 
     @Override
-    public boolean canMove(Position newPosition, Piece[][] board)
+    public List<Position> validMoveList(Piece[][] board)
     {
-        canMove = false;
-        previousCheckedPosition = newPosition;
-        //TODO need check to make sure pos != newPosition
-        if (pos.getX() != newPosition.getX() && pos.getY() != newPosition.getY())
-            return canMove = checkDiagonal(newPosition, board);
-
-        return false;
+        LinkedList<Position> validPositionList = new LinkedList<Position>();
+        checkDiagonal(board, validPositionList);
+        return validPositionList;
     }
 }
