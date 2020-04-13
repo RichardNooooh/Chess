@@ -36,6 +36,7 @@ public abstract class Piece
 
 	public class Position
 	{
+		private final int BOARD_LENGTH = 8; //TODO remove the boardlength var from other places.
 		private byte x;
 		private byte y;
 
@@ -46,6 +47,14 @@ public abstract class Piece
 		}
 		public byte getX(){ return x; }
 		public byte getY(){ return y; }
+
+		public boolean isOnBoard()
+		{
+			return x >= 0
+					&& y >= 0
+					&& x < BOARD_LENGTH
+					&& y < BOARD_LENGTH;
+		}
 
 		@Override
 		public boolean equals(Object other)

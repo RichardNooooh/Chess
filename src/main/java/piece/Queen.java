@@ -1,5 +1,7 @@
 package piece;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -16,99 +18,58 @@ public class Queen extends Piece
     protected Queen(){}
 
     @Override
-    public boolean canMove(Position newPosition, Piece[][] board)
+    public List<Position> validMoveList(Piece[][] board)
     {
-        previousCheckedPosition = newPosition;
+        LinkedList<Position> validPositions = new LinkedList<Position>();
 
-        //TODO need check to make sure pos != newPosition
-        byte thisX = pos.getX();
-        byte thisY = pos.getY();
-        byte newX = newPosition.getX();
-        byte newY = newPosition.getY();
+        checkLateral(board, validPositions);
+        checkDiagonal(board, validPositions);
 
-        if (thisX == newX || thisY == newY)
-            return canMove = checkLateral(newPosition, board);
-        else
-            return canMove = checkDiagonal(newPosition, board);
+        return validPositions;
     }
 
-    protected boolean checkLateral(Position newPos, Piece[][] board)
+    protected void checkLateral(Piece[][] board, LinkedList<Position> list)
     {
-        int xDiff = newPos.getX() - pos.getX();
-        int yDiff = newPos.getY() - pos.getY();
+        Function<Integer, Integer> constantDel = s -> s;
+        Function<Integer, Integer> posDel = s -> s + 1;
+        Function<Integer, Integer> negDel = s -> s - 1;
 
-        Piece blockingPiece = null;
-        if (xDiff == 0)
-        {
-            Predicate<Position> endPosition = s -> s.getY() == newPos.getY();
-            Function<Integer, Integer> horizontalConstant = x -> x;
-
-            if (yDiff > 0)
-                blockingPiece = loop(endPosition, horizontalConstant, y -> y + 1, board);
-            else if (yDiff < 0)
-                blockingPiece = loop(endPosition, horizontalConstant, y -> y - 1, board);
-        }
-        else
-        {
-            Predicate<Position> endPosition = s -> s.getX() == newPos.getX();
-            Function<Integer, Integer> verticalConstant = y -> y;
-
-            if (xDiff > 0)
-                blockingPiece = loop(endPosition, x -> x + 1, verticalConstant, board);
-            else if (xDiff < 0)
-                blockingPiece = loop(endPosition, x -> x - 1, verticalConstant, board);
-        }
-
-        if (blockingPiece != null)
-            return isEnemy(blockingPiece);
-
-        return false;
+        loop(constantDel, posDel, board, list);
+        loop(constantDel, negDel, board, list);
+        loop(posDel, constantDel, board, list);
+        loop(negDel, constantDel, board, list);
     }
 
-    protected boolean checkDiagonal(Position newPos, Piece[][] board)
+    protected void checkDiagonal(Piece[][] board, LinkedList<Position> list)
     {
-        int xDiff = newPos.getX() - pos.getX();
-        int yDiff = newPos.getY() - pos.getY();
+        Function<Integer, Integer> posDel = s -> s + 1;
+        Function<Integer, Integer> negDel = s -> s - 1;
 
-        Piece blockingPiece = null;
-        Predicate<Position> endPosition = s -> (s.getX() == newPos.getX()) && (s.getY() == newPos.getY());
-        if (xDiff > 0)
-        {
-            Function<Integer, Integer> horizontalChange = x -> x + 1;
-            if (yDiff > 0)
-                blockingPiece = loop(endPosition, horizontalChange, y -> y + 1, board);
-            else
-                blockingPiece = loop(endPosition, horizontalChange, y -> y - 1, board);
-        }
-        else
-        {
-            Function<Integer, Integer> horizontalChange = x -> x - 1;
-            if (yDiff > 0)
-                blockingPiece = loop(endPosition, horizontalChange, y -> y + 1, board);
-            else
-                blockingPiece = loop(endPosition, horizontalChange, y -> y - 1, board);
-        }
-
-        if (blockingPiece != null)
-            return isEnemy(blockingPiece);
-
-        return false;
+        loop(posDel, posDel, board, list);
+        loop(posDel, negDel, board, list);
+        loop(negDel, posDel, board, list);
+        loop(negDel, negDel, board, list);
     }
 
-    private Piece loop(Predicate<Position> endPosition,
-                       Function<Integer, Integer> xFunction,
-                       Function<Integer, Integer> yFunction,
-                       Piece[][] board)
+    private void loop(Function<Integer, Integer> xFunction,
+                      Function<Integer, Integer> yFunction,
+                      Piece[][] board,
+                      List<Position> list)
     {
         Position currentPos = pos;
-        while (!endPosition.test(currentPos))
+        Piece currentPiece = null;
+        while (currentPiece == null)
         {
             currentPos = nextTile(currentPos, xFunction, yFunction);
-            Piece currentPiece = board[currentPos.getX()][currentPos.getY()];
-            if (currentPiece != null)
-                return currentPiece;
+            if (currentPos.isOnBoard())
+            {
+                currentPiece = board[currentPos.getX()][currentPos.getY()];
+                if (currentPiece == null || isEnemy(currentPiece)) //TODO test this. pretty sure the boolean short circuit makes this safe.
+                    list.add(currentPos);
+            }
+            else
+                break;
         }
-        return null;
     }
 
     private Position nextTile(Position current,
