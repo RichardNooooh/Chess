@@ -1,15 +1,13 @@
 package piece;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class King extends Piece
 {
-    private final Position[] delPositions = {new Position((byte) 0, (byte) 1),
-                                             new Position((byte) 1, (byte) 1),
-                                             new Position((byte) 1, (byte) 0),
-                                             new Position((byte) 1, (byte) -1),
-                                             new Position((byte) 0, (byte) -1),
-                                             new Position((byte) -1, (byte) -1),
-                                             new Position((byte) -1, (byte) 0),
-                                             new Position((byte) -1, (byte) 1)};
+    private final byte[] delX = new byte[]{0, 1, 1, 1, 0, -1, -1, -1};
+    private final byte[] delY = new byte[]{1, 1, 0, -1, -1, -1, 0, 1};
+
     public King(Position position, Side side)
     {
         type = PieceType.KNIGHT;
@@ -18,19 +16,24 @@ public class King extends Piece
     }
 
     @Override
-    public boolean canMove(Position newPosition, Piece[][] board)
+    public List<Position> validMoveList(Piece[][] board)
     {
-        previousCheckedPosition = newPosition;
-        //check if piece is in stalemate
-        byte diffX = (byte)(newPosition.getX() - pos.getX());
-        byte diffY = (byte)(newPosition.getY() - pos.getY());
-        Position difPosition = new Position(diffX, diffY);
-        for (Position validPos : delPositions)
+        LinkedList<Position> validPositionList = new LinkedList<Position>();
+
+        byte thisX = pos.getX();
+        byte thisY = pos.getY();
+
+        for (int i = 0; i < delX.length; i++)
         {
-            if (difPosition.equals(validPos) && isEnemy(board[newPosition.getX()][newPosition.getY()]))
-                return canMove = true;
+            //TODO need to check if a given position would put it in check
+            byte currentX = (byte)(thisX + delX[i]);
+            byte currentY = (byte)(thisY + delY[i]);
+
+            Piece currentPiece = board[currentX][currentY];
+            if (currentPiece == null || isEnemy(currentPiece))
+                validPositionList.add(new Position(currentX, currentY));
         }
 
-        return false;
+        return validPositionList;
     }
 }
