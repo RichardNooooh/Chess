@@ -6,7 +6,6 @@ import java.util.function.Function;
 
 public class Pawn extends Piece
 {
-//	private boolean hasMoved;
 
 	public Pawn(Position position, Side side)
 	{
@@ -32,18 +31,32 @@ public class Pawn extends Piece
 	{
 		byte frontYPosition = moveFunction.apply(pos.getY());
 		byte currentX = pos.getX();
+		if (frontYPosition < Position.BOARD_LENGTH)
+		{
+			Piece frontPiece = board[currentX][frontYPosition];
+			if (frontPiece != null)
+				list.add(frontPiece.pos);
 
-		Piece frontPiece = board[currentX][frontYPosition];
-		Piece frontRightPiece = board[currentX + 1][frontYPosition];
-		Piece frontLeftPiece = board[currentX - 1][frontYPosition];
+			if (!hasMoved)
+			{
+				Piece doubleStepPiece = board[currentX][moveFunction.apply(frontYPosition)];
+				if (frontPiece != null && doubleStepPiece != null)
+					list.add(doubleStepPiece.pos);
+			}
 
-		if (frontPiece != null)
-			list.add(frontPiece.pos);
+			Piece frontRightPiece;
+			if (currentX + 1 < Position.BOARD_LENGTH
+					&& (frontRightPiece = board[currentX + 1][frontYPosition]) != null
+					&& isEnemy(frontRightPiece))
+				list.add(frontRightPiece.pos);
 
-		if (frontRightPiece != null && isEnemy(frontRightPiece))
-			list.add(frontRightPiece.pos);
-		if (frontLeftPiece != null && isEnemy(frontLeftPiece))
-			list.add(frontRightPiece.pos);
+			Piece frontLeftPiece;
+			if (currentX - 1 >= 0
+					&& (frontLeftPiece = board[currentX - 1][frontYPosition]) != null
+					&& isEnemy(frontLeftPiece))
+				list.add(frontLeftPiece.pos);
+		}
+
 	}
 
 }
