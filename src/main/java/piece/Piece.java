@@ -8,25 +8,20 @@ public abstract class Piece
 	protected Position pos;
 	protected Side side;
 
-	protected boolean canMove;
-	protected Position previousCheckedPosition;
+	protected boolean hasMoved;
 
 	public abstract List<Position> validMoveList (Piece[][] board);
 
 	public void move(Position newPosition, Piece[][] board)
 	{
-		if (canMove && newPosition.equals(previousCheckedPosition))
-		{
-			byte newX = newPosition.getX();
-			byte newY = newPosition.getY();
+		hasMoved = true;
+		byte newX = newPosition.getX();
+		byte newY = newPosition.getY();
 
-			pos = new Position(newX, newY);
-			board[pos.getX()][pos.getX()] = null;
-			board[newX][newY] = this;
-		}
-		else
-			throw new IllegalStateException("You must first check the position of the piece, and if that is true, " +
-					"call this method with the same position.");
+
+		pos = new Position(newX, newY);
+		board[pos.getX()][pos.getX()] = null;
+		board[newX][newY] = this;
 	}
 
 	public boolean isEnemy(Piece otherPiece)
@@ -36,7 +31,7 @@ public abstract class Piece
 
 	public class Position
 	{
-		private final int BOARD_LENGTH = 8; //TODO remove the boardlength var from other places.
+		public static final int BOARD_LENGTH = 8; //TODO remove the boardlength var from other places.
 		private byte x;
 		private byte y;
 
