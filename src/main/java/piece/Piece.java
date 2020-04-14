@@ -20,7 +20,7 @@ public abstract class Piece
 
 
 		pos = new Position(newX, newY);
-		board[pos.getX()][pos.getX()] = null;
+		board[pos.getX()][pos.getY()] = null;
 		board[newX][newY] = this;
 	}
 

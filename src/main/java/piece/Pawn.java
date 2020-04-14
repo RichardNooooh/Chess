@@ -6,6 +6,7 @@ import java.util.function.Function;
 
 public class Pawn extends Piece
 {
+	private boolean doubleStepped = false;
 
 	public Pawn(Position position, Side side)
 	{
@@ -26,6 +27,28 @@ public class Pawn extends Piece
 
 		return validPositions;
 	}
+
+	@Override
+	public void move(Position newPosition, Piece[][] board)
+	{
+		hasMoved = true;
+		byte newX = newPosition.getX();
+		byte newY = newPosition.getY();
+
+		pos = new Position(newX, newY);
+		board[pos.getX()][pos.getY()] = null;
+		board[newX][newY] = this;
+
+		if (newX - pos.getX() == 2 || newX - pos.getX() == -2)
+			doubleStepped = true;
+		
+		Piece enpassantPiece = board[newX][newY - 1];
+		if (enpassantPiece instanceof Pawn && ((Pawn) enpassantPiece).hasDoubleStepped())
+			board[newX][newY - 1] = null;
+	}
+
+	public boolean hasDoubleStepped() {return doubleStepped;}
+	public void resetDoubleStep() { doubleStepped = false;}
 
 	private void addPositions(Piece[][] board, List<Position> list, Function<Byte, Byte> moveFunction)
 	{
