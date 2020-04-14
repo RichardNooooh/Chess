@@ -41,7 +41,7 @@ public class Pawn extends Piece
 
 		if (newX - pos.getX() == 2 || newX - pos.getX() == -2)
 			doubleStepped = true;
-		
+
 		Piece enpassantPiece = board[newX][newY - 1];
 		if (enpassantPiece instanceof Pawn && ((Pawn) enpassantPiece).hasDoubleStepped())
 			board[newX][newY - 1] = null;

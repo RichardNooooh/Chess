@@ -60,7 +60,7 @@ public class Queen extends Piece
         while (currentPiece == null)
         {
             currentPos = nextTile(currentPos, xFunction, yFunction);
-            if (currentPos.isOnBoard())
+            if (currentPos != null)
             {
                 currentPiece = board[currentPos.getX()][currentPos.getY()];
                 if (currentPiece == null || isEnemy(currentPiece)) //TODO test this. pretty sure the boolean short circuit makes this safe.
@@ -78,7 +78,10 @@ public class Queen extends Piece
         //TODO fix this jank
         int newX = xFunction.apply((int) current.getX());
         int newY = yFunction.apply((int) current.getY());
-        return new Position((byte)newX, (byte)newY);
+        if (Position.isOnBoard(newX, newY))
+            return new Position((byte)newX, (byte)newY);
+        else
+            return null;
     }
 
 

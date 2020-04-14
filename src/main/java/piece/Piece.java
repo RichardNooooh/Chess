@@ -29,7 +29,7 @@ public abstract class Piece
 		return this.side != otherPiece.side;
 	}
 
-	public class Position
+	public static class Position
 	{
 		public static final int BOARD_LENGTH = 8; //TODO remove the boardlength var from other places.
 		private byte x;
@@ -43,7 +43,7 @@ public abstract class Piece
 		public byte getX(){ return x; }
 		public byte getY(){ return y; }
 
-		public boolean isOnBoard()
+		public static boolean isOnBoard(int x, int y)
 		{
 			return x >= 0
 					&& y >= 0

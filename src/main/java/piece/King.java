@@ -29,11 +29,22 @@ public class King extends Piece
             byte currentX = (byte)(thisX + delX[i]);
             byte currentY = (byte)(thisY + delY[i]);
 
-            Piece currentPiece = board[currentX][currentY];
-            if (currentPiece == null || isEnemy(currentPiece))
-                validPositionList.add(new Position(currentX, currentY));
+            if (Position.isOnBoard(currentX, currentY))
+            {
+                Piece currentPiece = board[currentX][currentY];
+                if (currentPiece == null || isEnemy(currentPiece))
+                    validPositionList.add(new Position(currentX, currentY));
+            }
         }
 
         return validPositionList;
     }
+
+
+//    private boolean isInCheck(Piece[][] board, byte xPos, byte yPos)
+//    {
+//
+//        return false;
+//    }
+
 }
