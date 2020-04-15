@@ -1,4 +1,4 @@
-package piece;
+package org.ideaman.piece;
 
 import java.util.LinkedList;
 import java.util.List;

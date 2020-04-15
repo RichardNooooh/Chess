@@ -1,4 +1,4 @@
-package piece;
+package org.ideaman.piece;
 
 public enum PieceType
 {
