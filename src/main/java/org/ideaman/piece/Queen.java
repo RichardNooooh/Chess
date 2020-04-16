@@ -1,5 +1,7 @@
 package org.ideaman.piece;
 
+import org.ideaman.manager.Position;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;

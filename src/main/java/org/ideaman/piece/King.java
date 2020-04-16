@@ -1,5 +1,7 @@
 package org.ideaman.piece;
 
+import org.ideaman.manager.Position;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,7 +12,7 @@ public class King extends Piece
 
     public King(Position position, Side side)
     {
-        type = PieceType.KNIGHT;
+        type = PieceType.KING;
         pos = position;
         this.side = side;
     }

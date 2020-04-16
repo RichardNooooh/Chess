@@ -1,5 +1,7 @@
 package org.ideaman.piece;
 
+import org.ideaman.manager.Position;
+
 import java.util.List;
 
 public abstract class Piece
@@ -24,42 +26,20 @@ public abstract class Piece
 		board[newX][newY] = this;
 	}
 
+	public Position getPosition()
+	{
+		return pos;
+	}
+
 	public boolean isEnemy(Piece otherPiece)
 	{
 		return this.side != otherPiece.side;
 	}
 
-	public static class Position
+	public String toString()
 	{
-		public static final int BOARD_LENGTH = 8; //TODO remove the boardlength var from other places.
-		private byte x;
-		private byte y;
-
-		public Position(byte x, byte y)
-		{
-			this.x = x;
-			this.y = y;
-		}
-		public byte getX(){ return x; }
-		public byte getY(){ return y; }
-
-		public static boolean isOnBoard(int x, int y)
-		{
-			return x >= 0
-					&& y >= 0
-					&& x < BOARD_LENGTH
-					&& y < BOARD_LENGTH;
-		}
-
-		@Override
-		public boolean equals(Object other)
-		{
-			if (other instanceof Position)
-			{
-				Position otherPos = (Position) other;
-				return this.x == otherPos.x && this.y == otherPos.y;
-			}
-			return false;
-		}
+		return "Piece: " + side + " " + type + " at " + pos;
 	}
+
+
 }
