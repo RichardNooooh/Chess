@@ -18,6 +18,12 @@ public class Pawn extends Piece
 	}
 
 	@Override
+	public Piece copy()
+	{
+		return new Pawn(new Position(pos.getX(), pos.getY()), side);
+	}
+
+	@Override
 	public List<Position> validMoveList (Piece[][] board)
 	{
 		LinkedList<Position> validPositions = new LinkedList<Position>();

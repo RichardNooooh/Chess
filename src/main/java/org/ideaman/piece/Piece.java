@@ -26,6 +26,8 @@ public abstract class Piece
 		board[newX][newY] = this;
 	}
 
+	public abstract Piece copy();
+
 	public Position getPosition()
 	{
 		return pos;

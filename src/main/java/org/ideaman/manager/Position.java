@@ -6,10 +6,10 @@ public class Position
 	private byte x;
 	private byte y;
 
-	public Position(byte x, byte y)
+	public Position(int x, int y)
 	{
-		this.x = x;
-		this.y = y;
+		this.x = (byte) x;
+		this.y = (byte) y;
 	}
 	public byte getX(){ return x; }
 	public byte getY(){ return y; }

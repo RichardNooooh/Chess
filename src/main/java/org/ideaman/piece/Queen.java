@@ -29,6 +29,12 @@ public class Queen extends Piece
         return validPositions;
     }
 
+    @Override
+    public Piece copy()
+    {
+        return new Queen(new Position(pos.getX(), pos.getY()), side);
+    }
+
     protected void checkLateral(Piece[][] board, LinkedList<Position> list)
     {
         Function<Integer, Integer> constantDel = s -> s;

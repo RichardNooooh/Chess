@@ -18,6 +18,12 @@ public class Knight extends Piece
     }
 
     @Override
+    public Piece copy()
+    {
+        return new Knight(new Position(pos.getX(), pos.getY()), side);
+    }
+
+    @Override
     public List<Position> validMoveList(Piece[][] board)
     {
         LinkedList<Position> validPositionList = new LinkedList<Position>();

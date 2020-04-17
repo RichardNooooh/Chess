@@ -15,6 +15,12 @@ public class Bishop extends Queen
     }
 
     @Override
+    public Piece copy()
+    {
+        return new Bishop(new Position(pos.getX(), pos.getY()), side);
+    }
+
+    @Override
     public List<Position> validMoveList(Piece[][] board)
     {
         LinkedList<Position> validPositionList = new LinkedList<Position>();
