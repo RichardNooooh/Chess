@@ -27,13 +27,12 @@ public class ChessManager
 		Piece[] baseSetup = setup.getSetupPieces();
 		for (Piece piece : baseSetup)
 			chessBoard[piece.getPosition().getX()][piece.getPosition().getY()] = piece.copy();
-
 	}
 
 	public void select(Position position)
 	{
 		BoardTile selectedTile = guiBoard[position.getX()][position.getY()];
-		System.out.println("This chess piece was selected: " + selectedPiece);
+		System.out.println("This chess piece was selected: " + selectedTile);
 	}
 
 	private static class ChessSetup

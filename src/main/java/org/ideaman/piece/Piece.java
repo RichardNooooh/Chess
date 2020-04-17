@@ -28,10 +28,14 @@ public abstract class Piece
 
 	public abstract Piece copy();
 
+	public PieceType getType(){ return type; }
+
 	public Position getPosition()
 	{
 		return pos;
 	}
+
+	public Side getSide() { return side; }
 
 	public boolean isEnemy(Piece otherPiece)
 	{

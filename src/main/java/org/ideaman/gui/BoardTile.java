@@ -4,36 +4,44 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import org.ideaman.manager.ChessManager;
 import org.ideaman.manager.Position;
 import org.ideaman.piece.Piece;
 import org.ideaman.piece.PieceType;
 import org.ideaman.piece.Side;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.net.URL;
 
 public class BoardTile
 {
-	private Side side;
 	private SelectionStatus selectStatus;
 
 	private Button button;
 	private Piece piece;
+	private boolean isWhite;
 	ChessManager manager;
 
 	public BoardTile(boolean isWhite, Piece piece, ChessManager manager)
 	{
 		this.manager = manager;
 		this.piece = piece;
-		this.side = isWhite ? Side.WHITE : Side.BLACK;
+		this.isWhite = isWhite;
 
 		selectStatus = SelectionStatus.NOT_SELECTED;
-
-
 		button = new Button();
+		if (piece != null)
+		{
+			PieceImage imageLibrary = PieceImage.getInstance();
+			Image chessImage = imageLibrary.getImage(piece.getSide(), piece.getType());
+			button.setGraphic(new ImageView(chessImage));
+		}
 		button.setMinSize(75,75);
-		String color = "-fx-background-color: " + (side == Side.WHITE ? "#ffffff" : "#000000") + ";";
+		button.setMaxSize(75,75);
+		String color = "-fx-background-color: " + (isWhite ? "#ffce9e" : "#d18b47") + ";";
 		button.setStyle(color + "-fx-background-radius: 0px;");
 		button.setOnAction(e -> {
 			if (piece != null)
@@ -56,6 +64,11 @@ public class BoardTile
 		//TODO set the boardTile background color/image
 	}
 
+	public String toString()
+	{
+		return piece.toString();
+	}
+
 	static class PieceImage
 	{
 		private static PieceImage instance = null;
@@ -63,37 +76,30 @@ public class BoardTile
 
 		private PieceImage()
 		{
-			try
-			{
-				setImages();
-			} catch(FileNotFoundException e)
-			{
-				System.out.println("File not found for images");
-			}
+			setImages();
 		}
 
-		private void setImages() throws FileNotFoundException
+		private void setImages()
 		{
-			String path = "resources/images/";
 			images = new Image[12];
-
-			images[0] = new Image(new FileInputStream(path + "white_pawn"));
-			images[1] = new Image(new FileInputStream(path + "black_pawn"));
-			images[2] = new Image(new FileInputStream(path + "white_rook"));
-			images[3] = new Image(new FileInputStream(path + "black_rook"));
-			images[4] = new Image(new FileInputStream(path + "white_knight"));
-			images[5] = new Image(new FileInputStream(path + "black_knight"));
-			images[6] = new Image(new FileInputStream(path + "white_bishop"));
-			images[7] = new Image(new FileInputStream(path + "black_bishop"));
-			images[8] = new Image(new FileInputStream(path + "white_king"));
-			images[9] = new Image(new FileInputStream(path + "black_king"));
-			images[10] = new Image(new FileInputStream(path + "white_queen"));
-			images[11] = new Image(new FileInputStream(path + "black_queen"));
+			ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+			images[0] = new Image(classloader.getResourceAsStream("white_pawn.png"));
+			images[1] = new Image(classloader.getResourceAsStream("black_pawn.png"));
+			images[2] = new Image(classloader.getResourceAsStream("white_rook.png"));
+			images[3] = new Image(classloader.getResourceAsStream("black_rook.png"));
+			images[4] = new Image(classloader.getResourceAsStream("white_knight.png"));
+			images[5] = new Image(classloader.getResourceAsStream("black_knight.png"));
+			images[6] = new Image(classloader.getResourceAsStream("white_bishop.png"));
+			images[7] = new Image(classloader.getResourceAsStream("black_bishop.png"));
+			images[8] = new Image(classloader.getResourceAsStream("white_king.png"));
+			images[9] = new Image(classloader.getResourceAsStream("black_king.png"));
+			images[10] = new Image(classloader.getResourceAsStream("white_queen.png"));
+			images[11] = new Image(classloader.getResourceAsStream("black_queen.png"));
 		}
 
 		public Image getImage(Side side, PieceType pieceType)
 		{
-			int multiple = side == Side.WHITE ? 0 : 1;
+			int sideVal = side == Side.WHITE ? 0 : 1;
 			int index;
 			switch (pieceType)
 			{
@@ -119,7 +125,7 @@ public class BoardTile
 					index = -1;
 			}
 
-			return images[multiple * index];
+			return images[2 * index + sideVal];
 		}
 
 		public static PieceImage getInstance()
