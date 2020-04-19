@@ -2,9 +2,11 @@ package org.ideaman.gui;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Circle;
 import org.ideaman.manager.ChessManager;
 import org.ideaman.manager.Position;
 import org.ideaman.piece.Piece;
@@ -25,18 +27,21 @@ public class BoardTile
 	private boolean isWhite;
 	ChessManager manager;
 
+	private PieceImage imageLibrary;
+
 	public BoardTile(boolean isWhite, Piece piece, ChessManager manager)
 	{
 		this.manager = manager;
 		this.piece = piece;
 		this.isWhite = isWhite;
 
+		imageLibrary = PieceImage.getInstance();
+
 		selectStatus = SelectionStatus.NOT_SELECTED;
 		button = new Button();
 		if (piece != null)
 		{
-			PieceImage imageLibrary = PieceImage.getInstance();
-			Image chessImage = imageLibrary.getImage(piece.getSide(), piece.getType());
+			Image chessImage = imageLibrary.getImage(piece);
 			button.setGraphic(new ImageView(chessImage));
 		}
 		button.setMinSize(75,75);
@@ -53,15 +58,39 @@ public class BoardTile
 		return button;
 	}
 
+	public Piece getPiece()
+	{
+		return piece;
+	}
+
+	public SelectionStatus getSelectionStatus()
+	{
+		return selectStatus;
+	}
+
+	public void resetImage()
+	{
+		button.setGraphic(null);
+	}
+
 	public void setSelection(SelectionStatus status)
 	{
 		selectStatus = status;
-		updateImage();
+		updateTile();
 	}
 
-	private void updateImage()
+	private void updateTile()
 	{
-		//TODO set the boardTile background color/image
+		Group selectCircle = new Group(new Circle(10, 10, 10));
+		selectCircle.setOpacity(0.3);
+		if (selectStatus == SelectionStatus.NOT_SELECTED)
+			button.setGraphic(new ImageView(imageLibrary.getImage(piece)));
+		else if (selectStatus == SelectionStatus.SELECTED)
+			System.out.println(piece + " was selected");
+		else if (selectStatus == SelectionStatus.CAN_MOVE)
+			button.setGraphic(selectCircle);
+		else if (selectStatus == SelectionStatus.ATTACK_MOVE)
+			System.out.println(piece + " can be attacked");
 	}
 
 	public String toString()
@@ -97,8 +126,13 @@ public class BoardTile
 			images[11] = new Image(classloader.getResourceAsStream("black_queen.png"));
 		}
 
-		public Image getImage(Side side, PieceType pieceType)
+		public Image getImage(Piece piece)
 		{
+			if (piece == null)
+				return null;
+
+			Side side = piece.getSide();
+			PieceType pieceType = piece.getType();
 			int sideVal = side == Side.WHITE ? 0 : 1;
 			int index;
 			switch (pieceType)

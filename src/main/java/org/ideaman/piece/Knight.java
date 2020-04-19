@@ -7,8 +7,8 @@ import java.util.List;
 
 public class Knight extends Piece
 {
-    private final byte[] delX = new byte[]{1, 3, 3, 1, -1, -3, -3, -1};
-    private final byte[] delY = new byte[]{3, 1, -1, -3, -3, -1, 1, 3};
+    private final byte[] delX = new byte[]{1, 2, 2, 1, -1, -2, -2, -1};
+    private final byte[] delY = new byte[]{2, 1, -1, -2, -2, -1, 1, 2};
 
     public Knight(Position position, Side side)
     {

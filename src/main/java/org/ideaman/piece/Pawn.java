@@ -29,9 +29,9 @@ public class Pawn extends Piece
 		LinkedList<Position> validPositions = new LinkedList<Position>();
 
 		if (side == Side.WHITE)
-			addPositions(board, validPositions, y -> (byte)(y + 1));
-		else if (side == Side.BLACK)
 			addPositions(board, validPositions, y -> (byte)(y - 1));
+		else if (side == Side.BLACK)
+			addPositions(board, validPositions, y -> (byte)(y + 1));
 
 		return validPositions;
 	}
