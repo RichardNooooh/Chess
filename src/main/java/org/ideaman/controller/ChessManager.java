@@ -1,7 +1,6 @@
-package org.ideaman.manager;
+package org.ideaman.controller;
 
 import org.ideaman.gui.BoardTile;
-import org.ideaman.gui.SelectionStatus;
 import org.ideaman.piece.*;
 
 import java.util.List;
@@ -9,19 +8,12 @@ import java.util.List;
 public class ChessManager
 {
 	private Piece[][] chessBoard;
-	private BoardTile[][] guiBoard;
 	private Piece selectedPiece;
 	private List<Position> previousList;
 
-	public ChessManager(BoardTile[][] guiBoard)
+	public ChessManager()
 	{
-		this.guiBoard = guiBoard;
 		startGame();
-	}
-
-	public Piece[][] getChessBoard()
-	{
-		return chessBoard;
 	}
 
 	private void startGame()
@@ -31,53 +23,6 @@ public class ChessManager
 		Piece[] baseSetup = setup.getSetupPieces();
 		for (Piece piece : baseSetup)
 			chessBoard[piece.getPosition().getX()][piece.getPosition().getY()] = piece.copy();
-	}
-
-	public void select(Position position)
-	{
-		BoardTile selectedTile = guiBoard[position.getX()][position.getY()];
-		Piece currentPiece = selectedTile.getPiece();
-		SelectionStatus currentTileStatus = selectedTile.getSelectionStatus();
-		switch(currentTileStatus)
-		{
-			case NOT_SELECTED:
-				if (previousList != null)
-					resetGUI();
-				selectedPiece = currentPiece;
-				selectedTile.setSelection(SelectionStatus.SELECTED);
-				setCanMoveStatus();
-				break;
-			case SELECTED:
-				break;
-			case ATTACK_MOVE:
-			case CAN_MOVE:
-				selectedPiece.move(currentPiece.getPosition(), chessBoard);
-				selectedTile.setSelection(SelectionStatus.NOT_SELECTED);
-				break;
-		}
-	}
-
-	private void resetGUI()
-	{
-		for (Position position : previousList)
-		{
-			BoardTile guiTile = guiBoard[position.getX()][position.getY()];
-			guiTile.resetImage();
-		}
-	}
-
-	private void setCanMoveStatus()
-	{
-		List<Position> canMovePositions = selectedPiece.validMoveList(chessBoard);
-		for (Position position : canMovePositions)
-		{
-			BoardTile guiTile = guiBoard[position.getX()][position.getY()];
-			if (chessBoard[position.getX()][position.getY()] == null)
-				guiTile.setSelection(SelectionStatus.CAN_MOVE);
-			else
-				guiTile.setSelection(SelectionStatus.ATTACK_MOVE);
-		}
-		previousList = canMovePositions;
 	}
 
 	private static class ChessSetup

@@ -1,4 +1,4 @@
-package org.ideaman.manager;
+package org.ideaman.controller;
 
 public class Position
 {

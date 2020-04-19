@@ -1,104 +1,40 @@
 package org.ideaman.gui;
 
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.shape.Circle;
-import org.ideaman.manager.ChessManager;
-import org.ideaman.manager.Position;
 import org.ideaman.piece.Piece;
 import org.ideaman.piece.PieceType;
 import org.ideaman.piece.Side;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.net.URL;
 
 public class BoardTile
 {
 	private SelectionStatus selectStatus;
 
 	private Button button;
-	private Piece piece;
 	private boolean isWhite;
-	ChessManager manager;
 
 	private PieceImage imageLibrary;
 
-	public BoardTile(boolean isWhite, Piece piece, ChessManager manager)
+	public BoardTile(boolean isWhite)
 	{
-		this.manager = manager;
-		this.piece = piece;
 		this.isWhite = isWhite;
 
 		imageLibrary = PieceImage.getInstance();
-
 		selectStatus = SelectionStatus.NOT_SELECTED;
+
 		button = new Button();
-		if (piece != null)
-		{
-			Image chessImage = imageLibrary.getImage(piece);
-			button.setGraphic(new ImageView(chessImage));
-		}
 		button.setMinSize(75,75);
 		button.setMaxSize(75,75);
 		String color = "-fx-background-color: " + (isWhite ? "#ffce9e" : "#d18b47") + ";";
 		button.setStyle(color + "-fx-background-radius: 0px;");
-		button.setOnAction(e -> {
-			if (piece != null)
-				manager.select(piece.getPosition());});
 	}
 
-	public Button getButton()
+	protected Button getButton()
 	{
 		return button;
 	}
 
-	public Piece getPiece()
-	{
-		return piece;
-	}
-
-	public SelectionStatus getSelectionStatus()
-	{
-		return selectStatus;
-	}
-
-	public void resetImage()
-	{
-		button.setGraphic(null);
-	}
-
-	public void setSelection(SelectionStatus status)
-	{
-		selectStatus = status;
-		updateTile();
-	}
-
-	private void updateTile()
-	{
-		Group selectCircle = new Group(new Circle(10, 10, 10));
-		selectCircle.setOpacity(0.3);
-		if (selectStatus == SelectionStatus.NOT_SELECTED)
-			button.setGraphic(new ImageView(imageLibrary.getImage(piece)));
-		else if (selectStatus == SelectionStatus.SELECTED)
-			System.out.println(piece + " was selected");
-		else if (selectStatus == SelectionStatus.CAN_MOVE)
-			button.setGraphic(selectCircle);
-		else if (selectStatus == SelectionStatus.ATTACK_MOVE)
-			System.out.println(piece + " can be attacked");
-	}
-
-	public String toString()
-	{
-		return piece.toString();
-	}
-
-	static class PieceImage
+	private static class PieceImage
 	{
 		private static PieceImage instance = null;
 		private Image[] images;

@@ -5,9 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.*;
 import javafx.scene.control.*;
-import org.ideaman.manager.ChessManager;
-import org.ideaman.manager.Position;
-import org.ideaman.piece.Piece;
+import org.ideaman.controller.Position;
 
 public class BoardGUI extends Application
 {
@@ -25,8 +23,6 @@ public class BoardGUI extends Application
         final int SIDE_LENGTH = Position.BOARD_LENGTH;
         tileButtons = new BoardTile[SIDE_LENGTH][SIDE_LENGTH];
 
-        ChessManager manager = new ChessManager(tileButtons);
-        Piece[][] chessBoard = manager.getChessBoard();
         GridPane boardGridPane = new GridPane();
 
         boolean isWhite = true;
@@ -34,8 +30,7 @@ public class BoardGUI extends Application
         {
             for (int j = 0; j < SIDE_LENGTH; j++)
             {
-                Piece connectedPiece = chessBoard[i][j];
-                BoardTile newTile = new BoardTile(isWhite, connectedPiece, manager);
+                BoardTile newTile = new BoardTile(isWhite);
                 tileButtons[i][j] = newTile;
 
                 Button tileButton = newTile.getButton();
@@ -53,10 +48,5 @@ public class BoardGUI extends Application
         window.setScene(scene);
         window.setTitle("Chess");
         window.show();
-    }
-
-    private void createTiles()
-    {
-
     }
 }

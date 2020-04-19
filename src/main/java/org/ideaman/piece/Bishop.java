@@ -1,6 +1,6 @@
 package org.ideaman.piece;
 
-import org.ideaman.manager.Position;
+import org.ideaman.controller.Position;
 
 import java.util.LinkedList;
 import java.util.List;
