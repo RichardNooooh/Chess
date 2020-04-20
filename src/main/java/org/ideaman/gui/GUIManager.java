@@ -1,4 +1,4 @@
-package org.ideaman.controller;
+package org.ideaman;
 
 public class GUIManager
 {
