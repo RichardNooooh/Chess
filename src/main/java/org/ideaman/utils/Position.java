@@ -1,4 +1,4 @@
-package org.ideaman;
+package org.ideaman.utils;
 
 public class Position
 {

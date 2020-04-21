@@ -1,11 +1,13 @@
-package org.ideaman.piece;
+package org.ideaman.model.piece;
 
-import org.ideaman.controller.Position;
+import org.ideaman.utils.Position;
 
 import java.util.List;
 
 public abstract class Piece
 {
+
+
 	protected PieceType type;
 	protected Position pos;
 	protected Side side;

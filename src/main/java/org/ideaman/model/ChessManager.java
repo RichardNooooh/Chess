@@ -1,15 +1,16 @@
-package org.ideaman.controller;
+package org.ideaman.model;
 
-import org.ideaman.gui.BoardTile;
-import org.ideaman.piece.*;
+import org.ideaman.gui.SelectionStatus;
+import org.ideaman.model.piece.*;
+import org.ideaman.utils.Position;
 
 import java.util.List;
 
 public class ChessManager
 {
 	private Piece[][] chessBoard;
-	private Piece selectedPiece;
-	private List<Position> previousList;
+
+	private Side currentTurn;
 
 	public ChessManager()
 	{
@@ -23,6 +24,15 @@ public class ChessManager
 		Piece[] baseSetup = setup.getSetupPieces();
 		for (Piece piece : baseSetup)
 			chessBoard[piece.getPosition().getX()][piece.getPosition().getY()] = piece.copy();
+	}
+
+	public List<Position> selectPiece(Position position)
+	{
+		Piece selectedPiece = chessBoard[position.getX()][position.getY()];
+		if (selectedPiece != null && selectedPiece.getSide() == currentTurn)
+			return selectedPiece.validMoveList(chessBoard);
+		else
+			return null;
 	}
 
 	private static class ChessSetup
