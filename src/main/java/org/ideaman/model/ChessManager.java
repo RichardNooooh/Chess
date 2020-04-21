@@ -1,6 +1,5 @@
 package org.ideaman.model;
 
-import org.ideaman.gui.SelectionStatus;
 import org.ideaman.model.piece.*;
 import org.ideaman.utils.Position;
 
