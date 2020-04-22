@@ -24,7 +24,7 @@ public class Bishop extends Queen
     public List<Position> validMoveList(Piece[][] board)
     {
         LinkedList<Position> validPositionList = new LinkedList<Position>();
-        checkLateral(board, validPositionList);
+        checkDiagonal(board, validPositionList);
         return validPositionList;
     }
 }

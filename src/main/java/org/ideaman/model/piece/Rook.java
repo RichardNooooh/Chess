@@ -24,7 +24,7 @@ public class Rook extends Queen
     public List<Position> validMoveList(Piece[][] board)
     {
         LinkedList<Position> validPositionList = new LinkedList<Position>();
-        checkDiagonal(board, validPositionList);
+        checkLateral(board, validPositionList);
         return validPositionList;
     }
 }
