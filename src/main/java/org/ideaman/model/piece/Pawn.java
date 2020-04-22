@@ -43,16 +43,16 @@ public class Pawn extends Piece
 		byte newX = newPosition.getX();
 		byte newY = newPosition.getY();
 
-		pos = new Position(newX, newY);
 		board[pos.getX()][pos.getY()] = null;
 		board[newX][newY] = this;
 
 		if (newX - pos.getX() == 2 || newX - pos.getX() == -2)
 			doubleStepped = true;
 
-		Piece enpassantPiece = board[newX][newY - 1];
-		if (enpassantPiece instanceof Pawn && ((Pawn) enpassantPiece).hasDoubleStepped())
-			board[newX][newY - 1] = null;
+		pos = new Position(newX, newY);
+//		Piece enpassantPiece = board[newX][newY - 1];
+//		if (enpassantPiece instanceof Pawn && ((Pawn) enpassantPiece).hasDoubleStepped())
+//			board[newX][newY - 1] = null;
 	}
 
 	public boolean hasDoubleStepped() {return doubleStepped;}
@@ -62,17 +62,18 @@ public class Pawn extends Piece
 	{
 		byte frontYPosition = moveFunction.apply(pos.getY());
 		byte currentX = pos.getX();
-		if (frontYPosition < Position.BOARD_LENGTH)
+		if (frontYPosition < Position.BOARD_LENGTH) //TODO use Position.isOnBoard() instead
 		{
 			Piece frontPiece = board[currentX][frontYPosition];
-			if (frontPiece != null)
-				list.add(frontPiece.pos);
+			if (frontPiece == null)
+				list.add(new Position(currentX, frontYPosition));
 
 			if (!hasMoved)
 			{
-				Piece doubleStepPiece = board[currentX][moveFunction.apply(frontYPosition)];
-				if (frontPiece != null && doubleStepPiece != null)
-					list.add(doubleStepPiece.pos);
+				byte doubleFrontYPosition = moveFunction.apply(frontYPosition);
+				Piece doubleStepPiece = board[currentX][doubleFrontYPosition];
+				if (frontPiece == null && doubleStepPiece == null)
+					list.add(new Position(currentX, doubleFrontYPosition));
 			}
 
 			Piece frontRightPiece;

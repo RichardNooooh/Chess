@@ -1,5 +1,6 @@
 package org.ideaman.model;
 
+import org.ideaman.gui.GUIManager;
 import org.ideaman.model.piece.*;
 import org.ideaman.utils.Position;
 
@@ -7,17 +8,22 @@ import java.util.List;
 
 public class ChessManager
 {
+	private GUIManager guiManager;
 	private Piece[][] chessBoard;
 
 	private Side currentTurn;
+	private Piece selectedPiece;
+	private List<Position> validMoveList;
 
-	public ChessManager()
+	public ChessManager(GUIManager manager)
 	{
+		guiManager = manager;
 		startGame();
 	}
 
 	private void startGame()
 	{
+		currentTurn = Side.WHITE;
 		chessBoard = new Piece[Position.BOARD_LENGTH][Position.BOARD_LENGTH];
 		ChessSetup setup = ChessSetup.getInstance();
 		Piece[] baseSetup = setup.getSetupPieces();
@@ -25,13 +31,33 @@ public class ChessManager
 			chessBoard[piece.getPosition().getX()][piece.getPosition().getY()] = piece.copy();
 	}
 
-	public List<Position> selectPiece(Position position)
+	public void selectPiece(Position position)
 	{
-		Piece selectedPiece = chessBoard[position.getX()][position.getY()];
-		if (selectedPiece != null && selectedPiece.getSide() == currentTurn)
-			return selectedPiece.validMoveList(chessBoard);
+		Piece newSelectedPiece = chessBoard[position.getX()][position.getY()];
+		if (selectedPiece == null && newSelectedPiece != null)
+		{
+			validMoveList = newSelectedPiece.validMoveList(chessBoard);
+			guiManager.setSelected(validMoveList);
+			selectedPiece = newSelectedPiece;
+		}
 		else
-			return null;
+		{
+			currentTurn = currentTurn == Side.WHITE ? Side.BLACK : Side.WHITE;
+			if (validMoveList != null && validMoveList.contains(position))
+				selectedPiece.move(position, chessBoard);
+			validMoveList = null;
+			selectedPiece = null;
+			guiManager.draw();
+		}
+
+//		if (selectedPiece != null && selectedPiece.getSide() == currentTurn) //TODO make sure this doesn't bring the king into check
+//			selectedPiece.validMoveList(chessBoard);
+	}
+
+	//TODO remove this after app is done, as this should only be used to draw the board
+	public Piece[][] getChessBoard()
+	{
+		return chessBoard;
 	}
 
 	private static class ChessSetup

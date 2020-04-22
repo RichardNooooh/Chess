@@ -1,0 +1,12 @@
+
+
+.white {
+    -fx-background-radius: 0px;
+    -fx-background-color: #ffce9e;
+
+}
+
+.black {
+    -fx-background-radius: 0px;
+    -fx-background-color: #d18b47;
+}

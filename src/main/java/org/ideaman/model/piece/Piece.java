@@ -22,10 +22,10 @@ public abstract class Piece
 		byte newX = newPosition.getX();
 		byte newY = newPosition.getY();
 
-
-		pos = new Position(newX, newY);
 		board[pos.getX()][pos.getY()] = null;
 		board[newX][newY] = this;
+
+		pos = new Position(newX, newY);
 	}
 
 	public abstract Piece copy();
