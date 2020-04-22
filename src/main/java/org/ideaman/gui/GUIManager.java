@@ -99,7 +99,7 @@ public class GUIManager
 			PieceType pieceType = piece.getType();
 			int sideVal = side == Side.WHITE ? 0 : 1;
 			int index;
-			switch (pieceType)
+			switch (pieceType) //TODO add an integer value to the PieceTypes or just use the enum order value
 			{
 				case PAWN:
 					index = 0;
