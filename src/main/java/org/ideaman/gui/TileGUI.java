@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public class TileGUI
@@ -36,8 +37,10 @@ public class TileGUI
 	//TODO adds the top StackPane image as the circle
 	protected void setAsSelected()
 	{
-		Group selectCircle = new Group(new Circle(10, 10, 10));
-		selectCircle.setOpacity(0.3);
+		Circle circle = new Circle(10, 10, 10);
+		circle.setFill(Color.RED);
+		Group selectCircle = new Group(circle);
+		selectCircle.setOpacity(0.5);
 
 		//TODO check and make sure this isn't already selected
 		layeredImages.getChildren().add(selectCircle);
