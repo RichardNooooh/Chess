@@ -34,7 +34,7 @@ public class ChessManager
 	public void selectPiece(Position position)
 	{
 		Piece newSelectedPiece = chessBoard[position.getX()][position.getY()];
-		if (selectedPiece == null && newSelectedPiece != null)
+		if (selectedPiece == null && newSelectedPiece != null && newSelectedPiece.getSide() == currentTurn)
 		{
 			validMoveList = newSelectedPiece.validMoveList(chessBoard);
 			guiManager.setSelected(validMoveList);
@@ -42,9 +42,12 @@ public class ChessManager
 		}
 		else
 		{
-			currentTurn = currentTurn == Side.WHITE ? Side.BLACK : Side.WHITE;
+
 			if (validMoveList != null && validMoveList.contains(position))
+			{
 				selectedPiece.move(position, chessBoard);
+				currentTurn = currentTurn == Side.WHITE ? Side.BLACK : Side.WHITE;
+			}
 			validMoveList = null;
 			selectedPiece = null;
 			guiManager.draw();
