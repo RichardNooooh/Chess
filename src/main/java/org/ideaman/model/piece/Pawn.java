@@ -62,7 +62,7 @@ public class Pawn extends Piece
 	{
 		byte frontYPosition = moveFunction.apply(pos.getY());
 		byte currentX = pos.getX();
-		if (frontYPosition < Position.BOARD_LENGTH) //TODO use Position.isOnBoard() instead
+		if (Position.isOnBoard(currentX, frontYPosition)) //TODO use Position.isOnBoard() instead
 		{
 			Piece frontPiece = board[currentX][frontYPosition];
 			if (frontPiece == null)
