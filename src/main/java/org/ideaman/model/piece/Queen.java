@@ -25,8 +25,8 @@ public class Queen extends Piece
     {
         LinkedList<Position> validPositions = new LinkedList<Position>();
 
-        checkLateral(board, validPositions, p -> p == null || isEnemy(p));
-        checkDiagonal(board, validPositions, p -> p == null || isEnemy(p));
+        checkLateral(board, validPositions, pos, p -> p == null || isEnemy(p));
+        checkDiagonal(board, validPositions, pos, p -> p == null || isEnemy(p));
 
         return validPositions;
     }
@@ -37,30 +37,30 @@ public class Queen extends Piece
         return new Queen(new Position(pos.getX(), pos.getY()), side);
     }
 
-    protected void checkLateral(Piece[][] board, LinkedList<Position> list, Predicate<Piece> selectionPredicate)
+    protected static void checkLateral(Piece[][] board, LinkedList<Position> list, Position position, Predicate<Piece> selectionPredicate)
     {
         Function<Integer, Integer> constantDel = s -> s;
         Function<Integer, Integer> posDel = s -> s + 1;
         Function<Integer, Integer> negDel = s -> s - 1;
 
-        loop(constantDel, posDel, selectionPredicate, board, list, pos);
-        loop(constantDel, negDel, selectionPredicate, board, list, pos);
-        loop(posDel, constantDel, selectionPredicate, board, list, pos);
-        loop(negDel, constantDel, selectionPredicate, board, list, pos);
+        loop(constantDel, posDel, selectionPredicate, board, list, position);
+        loop(constantDel, negDel, selectionPredicate, board, list, position);
+        loop(posDel, constantDel, selectionPredicate, board, list, position);
+        loop(negDel, constantDel, selectionPredicate, board, list, position);
     }
 
-    protected void checkDiagonal(Piece[][] board, LinkedList<Position> list, Predicate<Piece> selectionPredicate)
+    protected static void checkDiagonal(Piece[][] board, LinkedList<Position> list, Position position, Predicate<Piece> selectionPredicate)
     {
         Function<Integer, Integer> posDel = s -> s + 1;
         Function<Integer, Integer> negDel = s -> s - 1;
 
-        loop(posDel, posDel, selectionPredicate, board, list, pos);
-        loop(posDel, negDel, selectionPredicate, board, list, pos);
-        loop(negDel, posDel, selectionPredicate, board, list, pos);
-        loop(negDel, negDel, selectionPredicate, board, list, pos);
+        loop(posDel, posDel, selectionPredicate, board, list, position);
+        loop(posDel, negDel, selectionPredicate, board, list, position);
+        loop(negDel, posDel, selectionPredicate, board, list, position);
+        loop(negDel, negDel, selectionPredicate, board, list, position);
     }
 
-    private void loop(Function<Integer, Integer> xFunction,
+    private static void loop(Function<Integer, Integer> xFunction,
                         Function<Integer, Integer> yFunction,
                         Predicate<Piece> selectionPredicate,
                         Piece[][] board,
@@ -84,7 +84,7 @@ public class Queen extends Piece
         }
     }
 
-    private Position nextTile(Position current,
+    private static Position nextTile(Position current,
                               Function<Integer, Integer> xFunction,
                               Function<Integer, Integer> yFunction)
     {

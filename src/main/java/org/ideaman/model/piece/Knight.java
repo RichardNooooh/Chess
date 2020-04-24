@@ -8,8 +8,8 @@ import java.util.function.Predicate;
 
 public class Knight extends Piece
 {
-    private final byte[] delX = new byte[]{1, 2, 2, 1, -1, -2, -2, -1};
-    private final byte[] delY = new byte[]{2, 1, -1, -2, -2, -1, 1, 2};
+    private static final byte[] delX = new byte[]{1, 2, 2, 1, -1, -2, -2, -1};
+    private static final byte[] delY = new byte[]{2, 1, -1, -2, -2, -1, 1, 2};
 
     public Knight(Position position, Side side)
     {
@@ -35,7 +35,7 @@ public class Knight extends Piece
         return validPositionList;
     }
 
-    protected void getPositions(List<Position> list, Piece[][] board, Predicate<Piece> selectionPredicate, Position position)
+    protected static void getPositions(List<Position> list, Piece[][] board, Predicate<Piece> selectionPredicate, Position position)
     {
         byte thisX = position.getX();
         byte thisY = position.getY();
