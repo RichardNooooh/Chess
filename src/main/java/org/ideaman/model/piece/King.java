@@ -49,7 +49,7 @@ public class King extends Piece
     }
 
 
-//    private boolean isInCheck(Piece[][] board, byte xPos, byte yPos)
+//    private boolean isInCheck(Piece[][] board, int x, int y)
 //    {
 //
 //        return false;

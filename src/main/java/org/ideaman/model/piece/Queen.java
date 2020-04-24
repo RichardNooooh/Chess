@@ -4,7 +4,9 @@ import org.ideaman.utils.Position;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class Queen extends Piece
 {
@@ -23,8 +25,8 @@ public class Queen extends Piece
     {
         LinkedList<Position> validPositions = new LinkedList<Position>();
 
-        checkLateral(board, validPositions);
-        checkDiagonal(board, validPositions);
+        checkLateral(board, validPositions, p -> p == null || isEnemy(p));
+        checkDiagonal(board, validPositions, p -> p == null || isEnemy(p));
 
         return validPositions;
     }
@@ -35,35 +37,37 @@ public class Queen extends Piece
         return new Queen(new Position(pos.getX(), pos.getY()), side);
     }
 
-    protected void checkLateral(Piece[][] board, LinkedList<Position> list)
+    protected void checkLateral(Piece[][] board, LinkedList<Position> list, Predicate<Piece> selectionPredicate)
     {
         Function<Integer, Integer> constantDel = s -> s;
         Function<Integer, Integer> posDel = s -> s + 1;
         Function<Integer, Integer> negDel = s -> s - 1;
 
-        loop(constantDel, posDel, board, list);
-        loop(constantDel, negDel, board, list);
-        loop(posDel, constantDel, board, list);
-        loop(negDel, constantDel, board, list);
+        loop(constantDel, posDel, selectionPredicate, board, list, pos);
+        loop(constantDel, negDel, selectionPredicate, board, list, pos);
+        loop(posDel, constantDel, selectionPredicate, board, list, pos);
+        loop(negDel, constantDel, selectionPredicate, board, list, pos);
     }
 
-    protected void checkDiagonal(Piece[][] board, LinkedList<Position> list)
+    protected void checkDiagonal(Piece[][] board, LinkedList<Position> list, Predicate<Piece> selectionPredicate)
     {
         Function<Integer, Integer> posDel = s -> s + 1;
         Function<Integer, Integer> negDel = s -> s - 1;
 
-        loop(posDel, posDel, board, list);
-        loop(posDel, negDel, board, list);
-        loop(negDel, posDel, board, list);
-        loop(negDel, negDel, board, list);
+        loop(posDel, posDel, selectionPredicate, board, list, pos);
+        loop(posDel, negDel, selectionPredicate, board, list, pos);
+        loop(negDel, posDel, selectionPredicate, board, list, pos);
+        loop(negDel, negDel, selectionPredicate, board, list, pos);
     }
 
     private void loop(Function<Integer, Integer> xFunction,
-                      Function<Integer, Integer> yFunction,
-                      Piece[][] board,
-                      List<Position> list)
+                        Function<Integer, Integer> yFunction,
+                        Predicate<Piece> selectionPredicate,
+                        Piece[][] board,
+                        List<Position> list,
+                        Position position)
     {
-        Position currentPos = pos;
+        Position currentPos = position;
         Piece currentPiece = null;
         while (currentPiece == null)
         {
@@ -71,7 +75,8 @@ public class Queen extends Piece
             if (currentPos != null)
             {
                 currentPiece = board[currentPos.getX()][currentPos.getY()];
-                if (currentPiece == null || isEnemy(currentPiece)) //TODO test this. pretty sure the boolean short circuit makes this safe.
+
+                if (selectionPredicate.test(currentPiece))
                     list.add(currentPos);
             }
             else

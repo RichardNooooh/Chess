@@ -4,6 +4,7 @@ import org.ideaman.utils.Position;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class Knight extends Piece
 {
@@ -27,9 +28,17 @@ public class Knight extends Piece
     public List<Position> validMoveList(Piece[][] board)
     {
         LinkedList<Position> validPositionList = new LinkedList<Position>();
+        Predicate<Piece> validMovement = p -> p == null || isEnemy(p);
 
-        byte thisX = pos.getX();
-        byte thisY = pos.getY();
+        getPositions(validPositionList, board, validMovement, pos);
+
+        return validPositionList;
+    }
+
+    protected void getPositions(List<Position> list, Piece[][] board, Predicate<Piece> selectionPredicate, Position position)
+    {
+        byte thisX = position.getX();
+        byte thisY = position.getY();
 
         for (int i = 0; i < delX.length; i++)
         {
@@ -39,11 +48,9 @@ public class Knight extends Piece
             if (Position.isOnBoard(currentX, currentY))
             {
                 Piece currentPiece = board[currentX][currentY];
-                if (currentPiece == null || isEnemy(currentPiece))
-                    validPositionList.add(new Position(currentX, currentY));
+                if (selectionPredicate.test(currentPiece))
+                    list.add(new Position(currentX, currentY));
             }
         }
-
-        return validPositionList;
     }
 }

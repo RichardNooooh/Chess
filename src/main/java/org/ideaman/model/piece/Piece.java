@@ -7,7 +7,6 @@ import java.util.List;
 public abstract class Piece
 {
 
-
 	protected PieceType type;
 	protected Position pos;
 	protected Side side;
