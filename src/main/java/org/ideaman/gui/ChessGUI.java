@@ -16,6 +16,7 @@ public class ChessGUI
 	public ChessGUI(Stage stage, GUIManager guiManager)
 	{
 		this.guiManager = guiManager;
+		stage.setTitle("Chess!!");
 		primaryStage = stage;
 		setupBoard();
 	}
